@@ -19,10 +19,15 @@ Please note that by adding a token to the list we aren’t making any claims abo
 - [Fee on transfer tokens](https://github.com/d-xo/weird-erc20#fee-on-transfer)
 - [Tokens that modify balances without emitting a Transfer event](https://github.com/d-xo/weird-erc20#balance-modifications-outside-of-transfers-rebasingairdrops)
 
-### Base tokens
-For right now, `Base` tokens go through a separate review process. So, if you are adding tokens across both `Optimism` and `Base`, please separate this pull request into separate pull requests for each chain, in order to streamline the review process. If you are adding a token to a `Base` chain (e.g. `base` [mainnet] or `base-goerli` [testnet]) please add [@roberto-bayardo](https://github.com/roberto-bayardo) as a reviewer as they are the point of contact for `Base` tokens and must approve all `Base` tokens before they are merged.
+### Specifying chains
 
-Instead of using the predeploy token factory on Base, we recommend you use the token factory [listed here](https://docs.base.org/base-contracts/#l2-contract-addresses) for the time being to avoid having a token address that may conflict with a different token on Optimism.
+For right now, each OP Chain has their own review process. So, if you are adding tokens across multiple chains, please separate your pull request so that you have one PR for each chain, in order to streamline the review process.
+
+- If you're adding a token to `Base` (e.g. `base` [mainnet] or `base-sepolia` [testnet]), instead of using the predeploy token factory on Base, we recommend you use the token factory [listed here](https://docs.base.org/chain/base-contracts/#l2-contract-addresses) to avoid having a token address that may conflict with a different token on Optimism.
+- If you are adding a token to `Zora`: please use the [`zora` label](https://github.com/ethereum-optimism/ethereum-optimism.github.io/labels/zora) and add [@tbtstl](https://github.com/tbtstl) as a reviewer.
+- If you are adding a token to `Mode`: please use the [`mode` label](https://github.com/ethereum-optimism/ethereum-optimism.github.io/labels/mode).
+- If you are adding a token to `Lisk` (e.g. `lisk` [mainnet] or `lisk-sepolia` [testnet]): please use the [`lisk` label](https://github.com/ethereum-optimism/ethereum-optimism.github.io/labels/lisk) and add [@shuse2](https://github.com/shuse2) as a reviewer.
+- If you are adding a token to `Soneium` (e.g. `soneium` [mainnet] or `soneium-minato` [testnet]): please use the [`soneium` label](https://github.com/ethereum-optimism/ethereum-optimism.github.io/labels/soneium).
 
 ### Automated checks
 
@@ -38,11 +43,12 @@ These issues are marked below as "requires manual review".
 - Description is under 1000 characters (auto-reject)
 - Token `name`, `symbol`, and `decimals` matches on-chain data (auto-reject)
   - If `overrides` are used (requires manual review)
-- L2 token was deployed by the [StandardTokenFactory](https://github.com/ethereum-optimism/optimism/blob/develop/packages/contracts/contracts/L2/messaging/L2StandardTokenFactory.sol) or is an [L2StandardERC20](https://github.com/ethereum-optimism/optimism/blob/develop/packages/contracts/contracts/standards/L2StandardERC20.sol) token that uses the standard L2 bridge address (`0x4200000000000000000000000000000000000010`) (requires manual review)
+- L2 token was deployed by the [StandardTokenFactory](https://github.com/ethereum-optimism/optimism-legacy/blob/develop/packages/contracts/contracts/L2/messaging/L2StandardTokenFactory.sol) or is an [L2StandardERC20](https://github.com/ethereum-optimism/optimism-legacy/blob/develop/packages/contracts/contracts/standards/L2StandardERC20.sol) token that uses the standard L2 bridge address (`0x4200000000000000000000000000000000000010`) (requires manual review)
 - Ethereum token listed on the [CoinGecko Token List](https://tokenlists.org/token-list?url=https://tokens.coingecko.com/uniswap/all.json)(requires manual review)
   - *Why CoinGecko? CoinGecko's token list updates every hour which means we get token list updates very quickly. CoinGecko also uses an in-depth [listing criteria](https://www.coingecko.com/en/methodology).*
 
 #### Debugging Automated checks failures
+
 If your automated checks failed, you can see the reason for the failure by downloading `validation-artifacts.zip`, unzipping it and opening the `validation_results.txt` file. To locate the `validation-artifacts` follow these steps:
 
 1. Click on the `Details` link for `Validate PR` check in your PR
@@ -51,9 +57,11 @@ If your automated checks failed, you can see the reason for the failure by downl
 4. After download of `validation-artifacts.zip`, unzip it and open `validation_results.txt`
 
 If you make changes and need to run the validation check again, you will need to wait for a reviewer to approve the checks to run again. However, if you do not want to wait for a reviewer to approve the checks to run again to see if the failures have been resolved, you can run the validation checks locally by running:
-```
+
+```sh
 npx tsx ./bin/cli.ts validate --datadir ./data --tokens <data folder name (e.g. ETH)>
 ```
+
 ### Final approval
 
 All PRs are subject to a light-weight final approval, even if not marked as `requires manual review`.
@@ -87,16 +95,16 @@ Add a file to your folder called `data.json` with the following format:
     "optimism": {
       "address": "0x2345234523452345234523452345234523452345"
     },
-    "goerli": {
+    "sepolia": {
       "address": "0x5678567856785678567856785678567856785678"
     },
-    "optimism-goerli": {
+    "optimism-sepolia": {
       "address": "0x6789678967896789678967896789678967896789"
     },
     "base": {
       "address": "0x7890789078907890789078907890789078907890"
     },
-    "base-goerli": {
+    "base-sepolia": {
       "address": "0x1011121011121011121011121011121011121011"
     }
   }
@@ -108,13 +116,29 @@ We currently accept tokens on the following chains:
 
 - `ethereum`
 - `optimism`
-- `goerli`
-- `base`
-- `base-goerli`
-- `optimism-goerli`
+- `sepolia`
 - `optimism-sepolia`
+- `base`
+- `base-sepolia`
+- `mode`
+- `lisk`
+- `lisk-sepolia`
+- `redstone`
+- `metall2`
+- `metall2-sepolia`
+- `unichain`
+- `unichain-sepolia`
+- `soneium`
+- `soneium-minato`
+- `celo`
+- `celo-sepolia`
+- `swellchain`
+- `ink`
+- `ink-sepolia`
+- `worldchain`
+- `worldchain-sepolia`
 
-#### Non-bridgable tokens
+#### Non-bridgeable tokens
 
 If you would like to add your token to this token list but you do not want your token to be included on the Optimism Bridge app, please include the `nobridge` option.
 
@@ -182,11 +206,12 @@ If you require overrides for specific tokens, you can include the `overrides` fi
 ```
 
 ##### Bridge overrides
+
 To override an L1 bridge address, specify the L2 chain it bridges to along with the address of the L1 bridge. For an L2 bridge address override, just specify the address of the L2 bridge.
 
 Here is an example:
 
-```
+```json
 {
   "name": "Synthetix",
   "symbol": "SNX",
@@ -206,15 +231,15 @@ Here is an example:
         "bridge": "0x136b1EC699c62b0606854056f02dC7Bb80482d63"
       }
     },
-    "goerli": {
+    "sepolia": {
       "address": "0x51f44ca59b867E005e48FA573Cb8df83FC7f7597",
       "overrides": {
         "bridge": {
-          "optimism-goerli": "0x1427Bc44755d9Aa317535B1feE38922760Aa4e65"
+          "optimism-sepolia": "0x1427Bc44755d9Aa317535B1feE38922760Aa4e65"
         }
       }
     },
-    "optimism-goerli": {
+    "optimism-sepolia": {
       "address": "0x2E5ED97596a8368EB9E44B1f3F25B2E813845303",
       "overrides": {
         "bridge": "0xD2b3F0Ea40dB68088415412b0043F37B3088836D"
@@ -223,7 +248,6 @@ Here is an example:
   }
 }
 ```
-
 
 ### Create a pull request
 

@@ -1,0 +1,18 @@
+{
+  "name": "Propy",
+  "symbol": "PRO",
+  "decimals": 8,
+  "website": "https://propy.com",
+  "twitter": "@PropyInc",
+  "tokens": {
+    "ethereum": {
+      "address": "0x226bb599a12C826476e3A771454697EA52E9E220"
+    },
+    "base": {
+      "address": "0x18dD5B087bCA9920562aFf7A0199b96B9230438b"
+    },
+    "unichain": {
+      "address": "0xC6Fbf362a12804FEca22000f37DB5EFC1F41A7c9"
+    }
+  }
+}
